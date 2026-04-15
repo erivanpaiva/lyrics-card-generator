@@ -14,12 +14,12 @@ interface Props {
 
 export default function SearchResults({ results, onSelect }: Props) {
   return (
-    <div className="absolute top-full mt-2 w-full bg-white rounded-2xl border border-gray-200 overflow-hidden z-50">
+    <div className="absolute top-full z-50 mt-3 w-full origin-top overflow-hidden rounded-2xl border border-gray-200/80 bg-white/95 animate-[dropdownEnter_220ms_cubic-bezier(0.22,1,0.36,1)]">
       {results.map((song) => (
         <button
           key={song.id}
           onClick={() => onSelect(song)}
-          className="flex text-left items-center w-fullgap-3 px-4 py-3 hover:bg-neutral-200 transition-colors"
+          className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors duration-200 hover:bg-neutral-100"
         >
           <img
             src={song.cover}
@@ -36,6 +36,18 @@ export default function SearchResults({ results, onSelect }: Props) {
           </div>
         </button>
       ))}
+      <style jsx>{`
+        @keyframes dropdownEnter {
+          from {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.98);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+      `}</style>
     </div>
   );
 }

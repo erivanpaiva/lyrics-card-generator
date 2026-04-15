@@ -1,6 +1,5 @@
 "use client";
 
-import { clear } from "console";
 import { useState, useRef, useEffect } from "react";
 import SearchResults from "./SearchResults";
 
@@ -13,7 +12,11 @@ interface Song {
   url: string;
 }
 
-export default function SearchBar() {
+interface Props {
+  onSelect: (song: Song) => void;
+}
+
+export default function SearchBar({ onSelect }: Props) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Song[]>([]);
   const [loading, setLoading] = useState(false);
@@ -65,7 +68,7 @@ export default function SearchBar() {
     setQuery("");
     setShowDropdown(false);
     setResults([]);
-    console.log("Selected song:", song);
+    onSelect(song);
   }
 
   return (
