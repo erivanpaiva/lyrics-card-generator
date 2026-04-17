@@ -1,9 +1,18 @@
+import { Dispatch, SetStateAction } from "react";
+
 interface Props {
   lyrics: string;
   loading: boolean;
+  selectedIndexes: number[];
+  setSelectedIndexes: Dispatch<SetStateAction<number[]>>;
 }
 
-export default function LyricsViewer({ lyrics, loading }: Props) {
+export default function LyricsViewer({
+  lyrics,
+  loading,
+  selectedIndexes,
+  setSelectedIndexes,
+}: Props) {
   if (loading) {
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-6 flex items-center justify-center">
@@ -12,16 +21,39 @@ export default function LyricsViewer({ lyrics, loading }: Props) {
     );
   }
 
+  const lines = lyrics.split("\n");
+
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 overflow-y-auto max-h-[70vh]">
-      {lyrics.split("\n").map((line, i) => (
-        <p
-          key={i}
-          className="text-sm text-gray-800 py-1 px-2 rounded cursor-pointer hover:bg-gray-100"
-        >
-          {line}
-        </p>
-      ))}
+    <div className="bg-white rounded-xl border border-gray-200 p-6 overflow-y-auto h-full flex flex-col gap-4 lyrics-scroll">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-sm font-semibold text-gray-800">Lyrics</h2>
+        <p className="text-xs text-gray-400">Click to select up to 4 lines</p>
+      </div>
+      {lines.map((line, i) => {
+        if (!line.trim() || (line.startsWith("[") && line.endsWith("]")))
+          return null;
+        const isSelected = selectedIndexes.includes(i);
+
+        function toggleLine() {
+          setSelectedIndexes((prev) =>
+            prev.includes(i)
+              ? prev.filter((idx) => idx !== i)
+              : prev.length < 4
+                ? [...prev, i]
+                : prev,
+          );
+        }
+
+        return (
+          <div key={i} onClick={toggleLine} className="cursor-pointer py-1">
+            <span
+              className={`text-xl px-2 py-1 rounded bg-[#E9E9E9] transition-colors inline ${isSelected ? "bg-[#FFFF7D] text-black" : "text-gray-800"}`}
+            >
+              {line || "\u00A0"}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }

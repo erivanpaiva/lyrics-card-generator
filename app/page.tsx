@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import LyricsViewer from "./components/LyricsViewer";
+import LyricsCard from "./components/LyricsCard";
 
 interface Song {
   id: number;
@@ -15,8 +16,10 @@ interface Song {
 
 export default function Home() {
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
   const [lyrics, setLyrics] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const lines = lyrics.split("\n");
 
   async function handleSelectSong(song: Song) {
     setSelectedSong(song);
@@ -35,7 +38,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#FAFAFA]">
       <div
         className={`
           fixed top-0 left-0 w-full z-50
@@ -101,10 +104,27 @@ export default function Home() {
       </div>
 
       {selectedSong && (
-        <div className="pt-24 px-8">
-          <div className="grid grid-cols-2 gap-6 animate-fadeIn">
-            <LyricsViewer lyrics={lyrics} loading={loading} />
-            <div className="bg-white rounded-xl border border-gray-200 p-6 flex items-center justify-center"></div>
+        <div className="pt-24 px-12 pb-6 h-screen">
+          <div className="grid grid-cols-[2fr_3fr] gap-8 animate-fadeIn h-full">
+            <LyricsViewer
+              lyrics={lyrics}
+              loading={loading}
+              selectedIndexes={selectedIndexes}
+              setSelectedIndexes={setSelectedIndexes}
+            />
+            <div className="bg-white rounded-xl border border-gray-200 p-6 flex flex-col items-center gap-4">
+              <div className="w-full">
+                <h2 className="text-sm font-semibold text-gray-800">
+                  Card Preview
+                </h2>
+              </div>
+              <LyricsCard
+                image={selectedSong.artistImage}
+                lyrics={selectedIndexes.map((i) => lines[i])}
+                title={selectedSong.title}
+                artist={selectedSong.artist}
+              />
+            </div>
           </div>
         </div>
       )}
