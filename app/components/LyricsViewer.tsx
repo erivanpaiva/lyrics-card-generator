@@ -24,36 +24,39 @@ export default function LyricsViewer({
   const lines = lyrics.split("\n");
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 overflow-y-auto h-full flex flex-col gap-4 lyrics-scroll">
-      <div className="flex flex-col gap-1">
-        <h2 className="text-sm font-semibold text-gray-800">Lyrics</h2>
-        <p className="text-xs text-gray-400">Click to select up to 4 lines</p>
+    <div className="bg-white rounded-xl border border-gray-200 h-full flex flex-col overflow-hidden">
+      <div className="px-6 pt-6 pb-4 border-b border-gray-100 shrink-0">
+        <h2 className="text-xl font-semibold uppercase text-gray-800">
+          Lyrics
+        </h2>
       </div>
-      {lines.map((line, i) => {
-        if (!line.trim() || (line.startsWith("[") && line.endsWith("]")))
-          return null;
-        const isSelected = selectedIndexes.includes(i);
+      <div className="overflow-y-auto flex-1 min-h-0 px-6 py-4 flex flex-col gap-3 lyrics-scroll">
+        {lines.map((line, i) => {
+          if (!line.trim() || (line.startsWith("[") && line.endsWith("]")))
+            return null;
+          const isSelected = selectedIndexes.includes(i);
 
-        function toggleLine() {
-          setSelectedIndexes((prev) =>
-            prev.includes(i)
-              ? prev.filter((idx) => idx !== i)
-              : prev.length < 4
-                ? [...prev, i]
-                : prev,
+          function toggleLine() {
+            setSelectedIndexes((prev) =>
+              prev.includes(i)
+                ? prev.filter((idx) => idx !== i)
+                : prev.length < 4
+                  ? [...prev, i]
+                  : prev,
+            );
+          }
+
+          return (
+            <div key={i} onClick={toggleLine} className="cursor-pointer py-0.5">
+              <span
+                className={`text-2xl px-2 py-1 rounded bg-[#E9E9E9] transition-colors inline ${isSelected ? "bg-[#FFFF7D] text-black" : "text-gray-800"}`}
+              >
+                {line || "\u00A0"}
+              </span>
+            </div>
           );
-        }
-
-        return (
-          <div key={i} onClick={toggleLine} className="cursor-pointer py-1">
-            <span
-              className={`text-xl px-2 py-1 rounded bg-[#E9E9E9] transition-colors inline ${isSelected ? "bg-[#FFFF7D] text-black" : "text-gray-800"}`}
-            >
-              {line || "\u00A0"}
-            </span>
-          </div>
-        );
-      })}
+        })}
+      </div>
     </div>
   );
 }

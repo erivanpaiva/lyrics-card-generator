@@ -23,6 +23,8 @@ export default function Home() {
 
   async function handleSelectSong(song: Song) {
     setSelectedSong(song);
+    setSelectedIndexes([]);
+    setLyrics("");
     setLoading(true);
     try {
       const res = await fetch(
@@ -38,7 +40,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FAFAFA]">
+    <main className="h-screen flex flex-col bg-[#FAFAFA] overflow-hidden">
       <div
         className={`
           fixed top-0 left-0 w-full z-50
@@ -104,26 +106,32 @@ export default function Home() {
       </div>
 
       {selectedSong && (
-        <div className="pt-24 px-12 pb-6 h-screen">
-          <div className="grid grid-cols-[2fr_3fr] gap-8 animate-fadeIn h-full">
+        <div className="pt-28 pb-4 flex-1 min-h-0 max-w-7xl mx-auto px-6 w-full">
+          <div className="grid grid-cols-[3fr_2fr] gap-8 animate-fadeIn h-full">
             <LyricsViewer
               lyrics={lyrics}
               loading={loading}
               selectedIndexes={selectedIndexes}
               setSelectedIndexes={setSelectedIndexes}
             />
-            <div className="bg-white rounded-xl border border-gray-200 p-6 flex flex-col items-center gap-4">
-              <div className="w-full">
-                <h2 className="text-sm font-semibold text-gray-800">
+            <div className="bg-white rounded-xl border border-gray-200 h-full flex flex-col overflow-hidden">
+              <div className="px-6 pt-6 pb-4 border-b border-gray-100 shrink-0">
+                <h2 className="text-xl font-semibold uppercase text-gray-800">
                   Card Preview
                 </h2>
               </div>
-              <LyricsCard
-                image={selectedSong.artistImage}
-                lyrics={selectedIndexes.map((i) => lines[i])}
-                title={selectedSong.title}
-                artist={selectedSong.artist}
-              />
+              <div className="flex-1 flex items-start justify-center p-6">
+                <LyricsCard
+                  image={selectedSong.artistImage}
+                  lyrics={
+                    selectedIndexes.length > 0
+                      ? selectedIndexes.map((i) => lines[i])
+                      : ["Click on lyrics to select up to 4 lines"]
+                  }
+                  title={selectedSong.title}
+                  artist={selectedSong.artist}
+                />
+              </div>
             </div>
           </div>
         </div>
