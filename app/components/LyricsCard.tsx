@@ -8,16 +8,16 @@ interface Props {
 }
 
 export default function LyricsCard({ image, lyrics, title, artist }: Props) {
-  const [fontSize, setFontSize] = useState(19);
+  const [fontSize, setFontSize] = useState(18);
   const measureRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!measureRef.current || !lyrics.length) return;
 
     const el = measureRef.current;
-    const maxWidth = 402 - 40;
+    const maxWidth = 402 - 24;
 
-    let size = 19;
+    let size = 18;
 
     while (size > 10) {
       el.style.fontSize = size + "px";
@@ -44,19 +44,22 @@ export default function LyricsCard({ image, lyrics, title, artist }: Props) {
       />
       <div
         ref={measureRef}
-        className="absolute opacity-0 pointer-events-none whitespace-nowrap font-light tracking-[-0.01em]"
+        className="absolute opacity-0 pointer-events-none whitespace-nowrap font-light tracking-[0.01em]"
       >
         {lyrics.slice(0, 4).map((line, i) => (
-          <span key={i} className="px-[5px] py-[6px] inline-block">
+          <span key={i} className="px-[4px] inline-block">
             {line}
           </span>
         ))}
       </div>
-      <div className="absolute inset-0 flex flex-col justify-end pl-[20px] pb-[76px] gap-[5px]">
+      <div
+        style={{ gap: `${Math.round(fontSize * 0.26)}px` }}
+        className="absolute inset-0 flex flex-col justify-end pl-[20px] pb-[76px]"
+      >
         {lyrics.slice(0, 4).map((line, index) => (
           <span key={index} className="inline-block max-w-[calc(100%-40px)]">
             <span
-              className="bg-white px-[5px] py-[6px] font-light tracking-[-0.01em] whitespace-nowrap inline-block"
+              className="bg-white px-[4px] font-light tracking-[-0.01em] whitespace-nowrap inline-block"
               style={{ fontSize }}
             >
               {line}
@@ -66,11 +69,13 @@ export default function LyricsCard({ image, lyrics, title, artist }: Props) {
       </div>
 
       <div className="absolute bottom-0 left-0 w-full">
-        <div className="w-full h-[1px] bg-white" />
+        <div className="w-full h-[1.5px] bg-white" />
 
         <div className="w-full h-[58px] bg-black flex items-center justify-between">
-          <span className="text-white text-[13px] trackin-[0.02em] font-normal pl-[20px]">
-            {artist.toUpperCase()}, “{title.toUpperCase()}”
+          <span
+            className={`text-white font-normal uppercase whitescape-nowrap pl-[20px] leading-none ${`{artist}, “${title}”`.length > 30 ? "text-[12px] tracking-[0]" : "text-[12.5px] tracking-[0.025em]"}`}
+          >
+            {artist}, “{title}”
           </span>
 
           <img
