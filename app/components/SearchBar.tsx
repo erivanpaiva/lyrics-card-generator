@@ -14,9 +14,10 @@ interface Song {
 
 interface Props {
   onSelect: (song: Song) => void;
+  compact?: boolean;
 }
 
-export default function SearchBar({ onSelect }: Props) {
+export default function SearchBar({ onSelect, compact = false }: Props) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Song[]>([]);
   const [loading, setLoading] = useState(false);
@@ -73,7 +74,9 @@ export default function SearchBar({ onSelect }: Props) {
 
   return (
     <div ref={containerRef} className="relative w-full max-w-xl">
-      <div className="flex items-center bg-white border border-gray-200 rounded-full px-5 py-3 gap-3">
+      <div
+        className={`flex items-center bg-white border border-gray-200 rounded-full gap-3 transition-all duration-700 ${compact ? "px-4 py-2" : "px-5 py-3"}`}
+      >
         <svg
           className="w-5 h-5 text-gray-400 shrink-0"
           fill="none"

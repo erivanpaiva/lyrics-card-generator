@@ -24,13 +24,8 @@ export default function LyricsViewer({
   const lines = lyrics.split("\n");
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 h-full flex flex-col overflow-hidden">
-      <div className="px-6 pt-6 pb-4 border-b border-gray-100 shrink-0">
-        <h2 className="text-xl font-semibold uppercase text-gray-800">
-          Lyrics
-        </h2>
-      </div>
-      <div className="overflow-y-auto flex-1 min-h-0 px-6 py-4 flex flex-col gap-3 lyrics-scroll">
+    <div className="flex flex-col mx-6 mt-4 border border-gray-200 rounded-xl overflow-hidden">
+      <div className="overflow-y-auto h-[580px] px-6 py-4 flex flex-col gap-3 lyrics-scroll">
         {lines.map((line, i) => {
           if (!line.trim() || (line.startsWith("[") && line.endsWith("]")))
             return null;
@@ -47,9 +42,9 @@ export default function LyricsViewer({
           }
 
           return (
-            <div key={i} onClick={toggleLine} className="cursor-pointer py-0.5">
+            <div key={i} onClick={toggleLine} className="cursor-pointer">
               <span
-                className={`text-2xl px-2 py-1 rounded bg-[#E9E9E9] transition-colors inline ${isSelected ? "bg-[#FFFF7D] text-black" : "text-gray-800"}`}
+                className={`text-[14px] px-2 py-1 rounded bg-[#E9E9E9] transition-colors inline ${isSelected ? "bg-[#FFFF7D] text-black" : "text-gray-800"}`}
               >
                 {line || "\u00A0"}
               </span>
