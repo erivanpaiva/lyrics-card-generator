@@ -4,6 +4,7 @@ import { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import LyricsViewer from "./components/LyricsViewer";
 import LyricsCard from "./components/LyricsCard";
+import CardEditor from "./components/CardEditor";
 
 interface Song {
   id: number;
@@ -20,6 +21,14 @@ export default function Home() {
   const [lyrics, setLyrics] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const lines = lyrics.split("\n");
+  const [background, setBackground] = useState<"artist" | "album" | "upload">(
+    "artist",
+  );
+  const [ratio, setRatio] = useState<"square" | "wide">("square");
+  const [barColor, setBarColor] = useState<"black" | "image" | "custom">(
+    "black",
+  );
+  const [customColor, setCustomColor] = useState("#000000");
 
   async function handleSelectSong(song: Song) {
     setSelectedSong(song);
@@ -83,7 +92,7 @@ export default function Home() {
 
       {selectedSong && (
         <div className="flex flex-1 min-h-0 mt-16">
-          <div className="bg-white w-[420px] shrink-0 border-r border-gray-200 flex flex-col overflow-hidden">
+          <div className="bg-white w-[380px] shrink-0 border-r border-gray-200 flex flex-col overflow-hidden">
             <div className="px-5 pt-6 shrink-0">
               <div className="flex items-center gap-4 bg-[#F9F9F9] rounded-xl px-5 py-4">
                 <img
@@ -122,7 +131,7 @@ export default function Home() {
           <div className="bg-[#FAFAFA] flex-1 flex flex-col items-center justify-center overflow-hidden gap-6">
             <div
               style={{
-                transform: "scale(1.3)",
+                transform: "scale(1.2)",
                 transformOrigin: "center",
                 marginTop: "60px",
                 marginBottom: "60px",
@@ -141,42 +150,19 @@ export default function Home() {
                 artist={selectedSong.artist}
               />
             </div>
-            <div className="flex gap-3 mt-10 z-50">
-              <button className="bg-[#F0F0F0] flex items-center px-5 py-2.5 rounded-full border border-[#D8D8D8] text-sm font-medium text-gray-600 gap-2">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </svg>
-                Save Image
-              </button>
-              <button className="bg-[#F0F0F0] flex items-center px-5 py-2.5 rounded-full border border-[#D8D8D8] text-sm font-medium text-gray-600 gap-2">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                  />
-                </svg>
-                Share
-              </button>
-            </div>
           </div>
-          <div className="bg-white w-[420px] shrink-0 border-l border-gray-200 flex flex-col overflow-hidden"></div>
+          <div className="bg-white w-[380px] shrink-0 border-l border-gray-200 flex flex-col overflow-hidden">
+            <CardEditor
+              background={background}
+              setBackground={setBackground}
+              ratio={ratio}
+              setRatio={setRatio}
+              barColor={barColor}
+              setBarColor={setBarColor}
+              customColor={customColor}
+              setCustomColor={setCustomColor}
+            />
+          </div>
         </div>
       )}
     </main>
