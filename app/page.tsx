@@ -73,7 +73,7 @@ export default function Home() {
             className={`
                 font-bold text-gray-800 tracking-tight whitespace-nowrap shrink-0
                 transition-all duration-700
-                ${selectedSong ? "text-lg" : "text-4xl text-center"}
+                ${selectedSong ? "text-xl" : "text-[72px] text-center"}
               `}
           >
             Lyrics Card Generator
@@ -119,7 +119,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div>
+            <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
               <LyricsViewer
                 lyrics={lyrics}
                 loading={loading}

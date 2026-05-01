@@ -15,8 +15,16 @@ export default function LyricsViewer({
 }: Props) {
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-6 flex items-center justify-center">
-        <div className="animate-spin rounded-full w-5 h-5 border-2 border-gray-300 border-t-gray-600"></div>
+      <div className="flex flex-1 flex-col mx-6 mt-4 mb-4 border border-gray-200 rounded-xl min-h-0 px-6 py-4 overflow-hidden gap-3">
+        {[...Array(16)].map((_, i) => (
+          <div
+            key={i}
+            style={{
+              width: `${60 + Math.random() * 35}%`,
+            }}
+            className="h-8 bg-gray-200 rounded-md animate-pulse"
+          />
+        ))}
       </div>
     );
   }
@@ -24,8 +32,8 @@ export default function LyricsViewer({
   const lines = lyrics.split("\n");
 
   return (
-    <div className="flex flex-col mx-6 mt-4 border border-gray-200 rounded-xl overflow-hidden">
-      <div className="overflow-y-auto h-[580px] px-6 py-4 flex flex-col gap-3 lyrics-scroll">
+    <div className="flex flex-1 flex-col mx-6 mt-4 mb-4 border border-gray-200 rounded-xl min-h-0 overflow-hidden">
+      <div className="overflow-y-auto px-6 py-4 min-h-0 flex flex-1 flex-col gap-3 lyrics-scroll">
         {lines.map((line, i) => {
           if (!line.trim() || (line.startsWith("[") && line.endsWith("]")))
             return null;
@@ -44,7 +52,7 @@ export default function LyricsViewer({
           return (
             <div key={i} onClick={toggleLine} className="cursor-pointer">
               <span
-                className={`text-[14px] px-2 py-1 rounded bg-[#E9E9E9] transition-colors inline ${isSelected ? "bg-[#FFFF7D] text-black" : "text-gray-800"}`}
+                className={`text-sm px-2 py-1 rounded bg-[#E9E9E9] transition-colors inline ${isSelected ? "bg-[#FFFF7D] text-black" : "text-gray-800"}`}
               >
                 {line || "\u00A0"}
               </span>
